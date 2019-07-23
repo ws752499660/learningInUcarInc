@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>tk.quan9.mvn</groupId>
+  <artifactId>HelloWorld</artifactId>
+  <versioning>
+    <versions>
+      <version>1.0-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20190717080809</lastUpdated>
+  </versioning>
+</metadata>
