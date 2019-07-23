@@ -8,7 +8,7 @@ Java培训2组
 Maven 示例工程  
 * helloWorld  
 * mavenWeb  
-* NumberGenerator
+* NumberGenerator  
 * PluginRun  
 
 
