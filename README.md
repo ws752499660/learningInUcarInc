@@ -20,6 +20,13 @@ git实例工程
 
 ## javaweb-examples
 
-jsp,servlet javaweb示例工程（空）
+jsp,servlet javaweb示例工程  
+
+### jsp  
+
+* helloWorld （示例jsp)  
+
+### servlet
+* HelloWorld (示例javaweb-servlet)  
 
 
