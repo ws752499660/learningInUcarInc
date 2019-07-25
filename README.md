@@ -29,4 +29,5 @@ jsp,servlet javaweb示例工程
 ### servlet
 * HelloWorld (示例javaweb-servlet)  
 
-
+### miniMall
+* 一个实现登录的可添加/删除商品的购物车（项目内附README）
