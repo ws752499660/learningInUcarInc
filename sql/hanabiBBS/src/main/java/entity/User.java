@@ -6,6 +6,15 @@ public class User {
     private String passWord;
     private String email;
     private String phoneNum;
+    private int commentCounts;
+
+    public int getCommentCounts() {
+        return commentCounts;
+    }
+
+    public void setCommentCounts(int commentCounts) {
+        this.commentCounts = commentCounts;
+    }
 
     public String getId() {
         return id;

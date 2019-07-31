@@ -10,12 +10,12 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <title>评论修改页-Hanabi-BBS</title>
+    <title>评论编辑页-Hanabi-BBS</title>
 </head>
 <body>
 <h1>花火BBS</h1>
-<h2>评论编辑</h2>
-<form>
+<h2>新建/编辑 评论</h2>
+<form action="editcomment" method="post">
     <table>
         <tr>
             <td>
@@ -25,27 +25,43 @@
                 <%
                     Comment comment=(Comment)session.getAttribute("commentToEdit");
                     if(comment!=null){
+                        session.setAttribute("isEdit",true);
                 %>
-
+                <input type="text" name="title" value=<%= comment.getTitle()%>>
                 <%
                     }
+                    else {
+                        session.setAttribute("isEdit",false);
+                %>
+                <input type="text" name="title">
+                <% } %>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                内容：
+            </td>
+            <td>
+            <%
+                if(comment!=null){
+            %>
+                <input type="input" name="detail" value=<%= comment.getDetail()%>>
+                <%
+                }else {
+                %>
+                <input type="input" name="detail">
+                <%
+                }
                 %>
             </td>
         </tr>
         <tr>
             <td>
-                <textarea name="commentDetail"rows="3" cols="20">
-                    <%
-                        if(comment!=null){
-                    %>
-                    <%= comment.getDetail()%>
-                    <%
-                        }
-                    %>
-                </textarea>
+                <input type="submit" value="提交">
             </td>
         </tr>
     </table>
 </form>
+<a href="CommentGetter">返回</a>
 </body>
 </html>

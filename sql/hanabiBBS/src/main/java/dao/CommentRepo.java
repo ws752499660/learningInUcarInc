@@ -5,7 +5,10 @@ import entity.Comment;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CommentRepo {
@@ -66,10 +69,54 @@ public class CommentRepo {
         try{
             String getCommentById="SELECT * FROM comment where id="+Integer.parseInt(id);
             ResultSet rs=st.executeQuery(getCommentById);
+            rs.next();
             commentInput(comment,rs);
         }catch (SQLException e){
             e.printStackTrace();
         }
         return comment;
+    }
+
+    public boolean insertComment(Comment comment){
+        String insertComment=
+                "insert INTO comment " +
+                        "(title, detail, createTime, editTime, commentUserId) " +
+                        "value "+
+                        "('"+comment.getTitle()+"','"
+                        +comment.getDetail()+"','"
+                        +timeTrans(comment.getCreateTime())+"','"
+                        +timeTrans(comment.getEditTime())+"',"
+                        +Integer.parseInt(comment.getUserId())+")";
+        System.out.println(insertComment);
+        try {
+            if(st.execute(insertComment))
+                return true;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean updateComment(Comment comment){
+        String updateComment=
+                "UPDATE comment SET title='"+comment.getTitle()+
+                "', detail='"+comment.getDetail()+
+                "',editTime='"+timeTrans(comment.getEditTime())+
+                "' WHERE id="+Integer.parseInt(comment.getId());
+        System.out.println(updateComment);
+        try {
+            if(st.execute(updateComment))
+                return true;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private String timeTrans(Date date){
+        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+        String dateString= sdf.format(date);
+        System.out.println(dateString);
+        return dateString;
     }
 }

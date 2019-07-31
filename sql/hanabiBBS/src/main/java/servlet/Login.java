@@ -1,6 +1,6 @@
 package servlet;
 
-import dao.LoginRepo;
+import dao.UserRepo;
 import entity.User;
 
 import javax.servlet.ServletException;
@@ -18,8 +18,8 @@ public class Login extends HttpServlet {
         String id=request.getParameter("id");
         String passWord=request.getParameter("passWord");
         HttpSession session=request.getSession();
-        LoginRepo loginRepo=new LoginRepo(id,passWord);
-        if(loginRepo.LoginCheck()){
+        UserRepo userRepo =new UserRepo();
+        if(userRepo.LoginCheck(id,passWord)){
             System.out.println("id："+id+"  登录成功!");
             setLoginUser(id,passWord,session);
             response.sendRedirect("/hanabiBBS/CommentGetter");
