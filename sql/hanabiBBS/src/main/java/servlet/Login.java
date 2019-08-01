@@ -21,8 +21,9 @@ public class Login extends HttpServlet {
         UserRepo userRepo =new UserRepo();
         if(userRepo.LoginCheck(id,passWord)){
             System.out.println("id："+id+"  登录成功!");
-            setLoginUser(id,passWord,session);
-            response.sendRedirect("/hanabiBBS/CommentGetter");
+            User user=userRepo.getUserById(id);
+            setLoginUser(user,session);
+            response.sendRedirect("/hanabiBBS/CommentGetter?commentPage=1");
         }
         else {
             System.out.println("登录失败");
@@ -34,10 +35,7 @@ public class Login extends HttpServlet {
 
     }
 
-    private void setLoginUser(String id,String passWord,HttpSession session){
-        User user=new User();
-        user.setId(id);
-        user.setPassWord(passWord);
+    private void setLoginUser(User user,HttpSession session){
         session.setAttribute("LoginUser",user);
     }
 }

@@ -5,7 +5,6 @@ import entity.Comment;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,7 +13,21 @@ import java.util.List;
 public class CommentRepo {
     private Statement st;
 
-    private void commentInput(Comment comment,ResultSet rs){
+    public CommentRepo(){
+        try {
+            st = DbUnit.conn.createStatement();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        DbUnit.conn.close();
+    }
+
+    private void commentInput(Comment comment, ResultSet rs){
         try {
             comment.setId(String.valueOf(rs.getObject("id")));
             comment.setTitle(rs.getString("title"));
@@ -28,18 +41,10 @@ public class CommentRepo {
 
     }
 
-    public CommentRepo(){
-        try {
-            st = DbUnit.conn.createStatement();
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-    }
-
-    public List<Comment> getCommentList(){
+    public List<Comment> getCommentListWithPages(int pagesIndex){
         List<Comment> commentList=new ArrayList<>();
         try {
-            String getAllComments="SELECT * FROM comment";
+            String getAllComments="SELECT * FROM comment LIMIT 10 offset "+pagesIndex*10;
             ResultSet rs=st.executeQuery(getAllComments);
             while (rs.next()){
                 Comment comment=new Comment();
@@ -52,6 +57,20 @@ public class CommentRepo {
         return commentList;
     }
 
+    public int getCommentCounts(){
+        int counts=0;
+        try {
+            String getCommentCounts="SELECT count(*) FROM comment";
+            ResultSet rs=st.executeQuery(getCommentCounts);
+            System.out.println(getCommentCounts);
+            rs.next();
+            counts=rs.getInt(1);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return counts;
+    }
+
     public boolean deleteComment(String id){
         try{
             String deleteComment="DELETE FROM comment where id="+Integer.parseInt(id);
@@ -62,6 +81,22 @@ public class CommentRepo {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public List<Comment> getCommentListByUserId(String userId){
+        List<Comment> commentList=new ArrayList<>();
+        try {
+            String getCommentListByUserId="SELECT * FROM comment where commentUserId="+Integer.parseInt(userId);
+            ResultSet rs=st.executeQuery(getCommentListByUserId);
+            while (rs.next()){
+                Comment comment=new Comment();
+                commentInput(comment,rs);
+                commentList.add(comment);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return commentList;
     }
 
     public Comment getCommentById(String id){

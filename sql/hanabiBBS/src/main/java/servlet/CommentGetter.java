@@ -23,10 +23,22 @@ public class CommentGetter extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         CommentRepo commentRepo=new CommentRepo();
         HttpSession session=request.getSession();
-        List<Comment> commentList=commentRepo.getCommentList();
-        if(!commentList.isEmpty()){
-            session.setAttribute("commentList",commentList);
+        int pagesIndex=0;
+        if(request.getParameter("commentPage")!=null){
+            pagesIndex=Integer.parseInt(request.getParameter("commentPage"))-1;
         }
+        int commentCounts=commentRepo.getCommentCounts();
+        int pageListLength=1;
+        if(commentCounts%10==0){
+            pageListLength=commentCounts/10;
+        }else {
+            pageListLength=commentCounts/10+1;
+        }
+        List<Comment> commentList=commentRepo.getCommentListWithPages(pagesIndex);
+
+        session.setAttribute("commentList",commentList);
+        session.setAttribute("pageListLength",pageListLength);
+
         response.sendRedirect("/hanabiBBS/commentList.jsp");
     }
 }

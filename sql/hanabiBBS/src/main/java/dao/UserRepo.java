@@ -19,8 +19,16 @@ public class UserRepo {
             e.printStackTrace();
         }
     }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        DbUnit.conn.close();
+    }
+
     public boolean LoginCheck(String id, String passWord) {
         String getPwById = "SELECT passWord FROM user WHERE id="+Integer.parseInt(id);
+        System.out.println(getPwById);
         try {
             ResultSet rs = st.executeQuery(getPwById);
             rs.next();
@@ -35,6 +43,7 @@ public class UserRepo {
     public List<User> getUserList(){
         String getUserList="SELECT * FROM user";
         List<User> userList=new ArrayList<>();
+        System.out.println(getUserList);
         try {
             ResultSet rs=st.executeQuery(getUserList);
             while (rs.next()){
@@ -49,7 +58,8 @@ public class UserRepo {
     }
 
     public int getCommentCount(String userId){
-        String getComment="SELECT count(*) from comment WHERE commentUserId="+userId;
+        String getComment="SELECT count(*) from comment WHERE commentUserId="+Integer.parseInt(userId);
+        System.out.println(getComment);
         int count=0;
         try {
             ResultSet rs=st.executeQuery(getComment);
@@ -63,7 +73,8 @@ public class UserRepo {
 
     public User getUserById(String userId){
         User user=new User();
-        String getUserById="SELECT * FROM user WHERE id="+userId;
+        String getUserById="SELECT * FROM user WHERE id="+Integer.parseInt(userId);
+        System.out.println(getUserById);
         try {
             ResultSet rs=st.executeQuery(getUserById);
             rs.next();
@@ -81,6 +92,7 @@ public class UserRepo {
                 +"', phoneNum='"+user.getPhoneNum()
                 +"', email='"+user.getEmail()
                 +"' WHERE id="+user.getId();
+        System.out.println(updateUser);
         try {
             st.execute(updateUser);
         }catch (SQLException e){
