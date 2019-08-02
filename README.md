@@ -36,3 +36,7 @@ jsp,servlet javaweb示例工程
 数据库学习相关
 * 内按不同日期或者用途已经在文件上做了标注
 * HanabiBBS 花火BBS
+
+## mybatis+spring  
+mybatis和spring整合项目
+* hanabisuki 花火溯琦——花火BBS重构（施工中）
