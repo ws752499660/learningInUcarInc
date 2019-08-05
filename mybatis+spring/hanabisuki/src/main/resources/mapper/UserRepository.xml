@@ -17,7 +17,7 @@
 
     <update id="updateUser" parameterType="User">
         UPDATE user SET
-            userName=#{username},
+            userName=#{userName},
             passWord=#{passWord},
             email=#{email},
             phoneNum=#{phoneNum}

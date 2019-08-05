@@ -13,10 +13,8 @@ public interface UserRepository {
 
     public List<User> getUserList();
 
-    public int getCommentCount(String userId);
+    public int getCommentCount(int userId);
 
     public void updateUser(User user);
-
-
 
 }

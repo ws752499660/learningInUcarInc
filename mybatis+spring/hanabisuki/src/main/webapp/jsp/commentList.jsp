@@ -1,14 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="tk.quan9.javaweb.hanabisuki.entity.Comment" %>
 <%@ page import="tk.quan9.javaweb.hanabisuki.entity.User" %>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 2019/7/30
-  Time: 10:52
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -20,12 +12,26 @@
 <%
     List<Comment> commentList=(List) session.getAttribute("commentList");
 %>
+<div style="position: relative;text-align: center;">
 <h1>花火BBS</h1>
 <h2>欢迎你，<%
     User user=(User) session.getAttribute("LoginUser");
                 out.print(user.getUserName());%></h2>
 <h2>评论列表</h2>
+</div>
 <a href="CommentGetter">刷新</a>
+<h3 style="color: red">
+<% if(session.getAttribute("deleteFlag")!=null){ %>
+    <% if((boolean)session.getAttribute("deleteFlag")){ %>
+    <b>删除成功！</b>
+    <% }else{ %>
+    <b>删除失败！</b>
+
+<%      }
+        session.setAttribute("deleteFlag",null);
+    }
+%>
+</h3>
 <table>
 <%
     if(!commentList.isEmpty()) {
@@ -72,9 +78,9 @@
     <br>
     <a href="/UserGetter">查看用户信息</a>
     <br>
-    <a href="/searchByUser">通过用户ID搜索发言</a>
+    <a href="/redirectJsp/search">通过用户ID搜索发言</a>
     <br>
-    <a href="/redirectJsp/index">退出</a>
+    <a href="/logout">退出</a>
 </table>
 </body>
 </html>

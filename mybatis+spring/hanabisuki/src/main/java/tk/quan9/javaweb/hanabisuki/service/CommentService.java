@@ -11,9 +11,13 @@ public interface CommentService {
 
     public List<Comment> getCommentListWithPages(int pagesIndex);
 
-    public Comment getCommentById(String id);
+    public Comment getCommentById(int id);
 
     public void updateComment(HttpServletRequest request, HttpSession session);
 
     public void insertComment(HttpServletRequest request,HttpSession session);
+
+    public void deleteComment(int id);
+
+    public List<Comment> getCommentListByUserId(int id);
 }

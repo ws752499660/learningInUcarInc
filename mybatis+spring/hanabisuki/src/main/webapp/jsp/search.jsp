@@ -17,7 +17,7 @@
 <body>
 <h1>花火BBS</h1>
 <h2>用户发言搜索</h2>
-<form action="searchByUser" method="post">
+<form action="/searchByUser" method="post">
     <table>
         <tr>
             <td>用户id：</td>

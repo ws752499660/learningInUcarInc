@@ -1,6 +1,7 @@
 
 <%@ page import="java.util.List" %>
 <%@ page import="tk.quan9.javaweb.hanabisuki.entity.User" %>
+<%@ page import="tk.quan9.javaweb.hanabisuki.service.impl.Security" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
@@ -38,7 +39,7 @@
             <td><%=userList.get(i).getEmail()%></td>
             <td><%=userList.get(i).getPhoneNum()%></td>
             <td>
-                <a href="userProfileProducer?commentUserId=<%=userList.get(i).getId()%>">修改</a>
+                <a href="userProfileProducer?userId=<%=String.valueOf(userList.get(i).getId())%>">修改</a>
             </td>
         </tr>
     <%

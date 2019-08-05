@@ -39,4 +39,4 @@ jsp,servlet javaweb示例工程
 
 ## mybatis+spring  
 mybatis和spring整合项目
-* hanabisuki 花火溯琦——花火BBS重构（施工中）
+* hanabisuki 花火溯琦——花火BBS重构

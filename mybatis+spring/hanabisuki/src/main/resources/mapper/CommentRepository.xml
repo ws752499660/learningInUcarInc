@@ -30,7 +30,7 @@
 
     <update id="updateComment" parameterType="Comment">
         update comment set
-            title=#{titile},
+            title=#{title},
             detail=#{detail},
             editTime=#{editTime}
         where id=#{id}

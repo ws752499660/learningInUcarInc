@@ -18,7 +18,7 @@
 <%
     User user=(User)session.getAttribute("userForProfile");
 %>
-<form method="post" action="userProfileProducer">
+<form method="post" action="/userProfileEditor">
     <table border="1">
         <tr>
             <td>用户ID：</td>
@@ -33,7 +33,7 @@
         <tr>
             <td>密码：</td>
             <td>
-                <input type="password" value="<%=user.getPassWord()%>" name="passWord">
+                <input type="password" value="" name="passWord">
             </td>
         </tr>
         <tr>
