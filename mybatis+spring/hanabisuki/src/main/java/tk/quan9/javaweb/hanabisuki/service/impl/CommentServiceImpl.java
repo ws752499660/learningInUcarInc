@@ -7,6 +7,7 @@ import tk.quan9.javaweb.hanabisuki.entity.Comment;
 import tk.quan9.javaweb.hanabisuki.entity.User;
 import tk.quan9.javaweb.hanabisuki.repository.CommentRepository;
 import tk.quan9.javaweb.hanabisuki.service.CommentService;
+import tk.quan9.javaweb.hanabisuki.service.RightsCheck;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -17,6 +18,8 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
     @Autowired
     private CommentRepository commentRepository;
+    @Autowired
+    private RightsCheck rightsCheck;
 
     private String codeTrans(String a){
         try {

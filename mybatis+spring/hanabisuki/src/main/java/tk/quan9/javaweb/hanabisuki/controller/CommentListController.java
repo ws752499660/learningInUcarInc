@@ -57,11 +57,18 @@ public class CommentListController {
     }
 
     @RequestMapping(method = RequestMethod.GET,value = {"/editcomment"})
-    public String editComment(HttpSession session,HttpServletRequest request){
+    public String editComment(HttpSession session,
+                              HttpServletRequest request,HttpServletResponse response){
         String commentId=request.getParameter("commentId");
         if(!commentId.equals("new")) {
             Comment comment = commentService.getCommentById(Integer.parseInt(commentId));
-            session.setAttribute("commentToEdit", comment);
+            User user=(User)session.getAttribute("LoginUser");
+            if(rightsCheck.userEditCheck(user.getId(),comment.getCommentUserId())) {
+                session.setAttribute("commentToEdit", comment);
+            }else {
+                redirect("/CommentGetter",response);
+                return null;
+            }
         }else {
             session.setAttribute("commentToEdit", null);
         }

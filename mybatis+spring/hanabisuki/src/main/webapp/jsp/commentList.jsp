@@ -6,6 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link href="https://cdn.bootcss.com/mdui/0.4.3/css/mdui.css" rel="stylesheet">
     <title>评论列表页-Hanabi-BBS</title>
 </head>
 <body>
@@ -18,8 +19,7 @@
     User user=(User) session.getAttribute("LoginUser");
                 out.print(user.getUserName());%></h2>
 <h2>评论列表</h2>
-</div>
-<a href="CommentGetter">刷新</a>
+<a class="mdui-btn mdui-btn-raised mdui-ripple" href="CommentGetter">刷新</a>
 <h3 style="color: red">
 <% if(session.getAttribute("deleteFlag")!=null){ %>
     <% if((boolean)session.getAttribute("deleteFlag")){ %>
@@ -36,7 +36,7 @@
 <%
     if(!commentList.isEmpty()) {
 %>
-    <table border="1">
+    <table border="1" style="margin: 0 auto">
         <tr>
             <th>标题</th>
             <th>内容</th>
@@ -66,14 +66,13 @@
 <%
     }
 %>
-    <table>
-        <tr>
-            <td>页数：</td>
-            <% for(int i=0;i<(int)session.getAttribute("pageListLength");i++){%>
-                <td><a href="CommentGetter?commentPage=<%= i+1%>">[<%= i+1 %>] </a></td>
-            <% } %>
-        </tr>
-    </table>
+    <div style="position: relative; top:10px;">
+        <b>页数:</b>
+        <% for(int i=0;i<(int)session.getAttribute("pageListLength");i++){%>
+            <a class="mdui-btn mdui-btn-icon mdui-btn-dense mdui-color-theme-accent mdui-ripple" href="CommentGetter?commentPage=<%= i+1%>"><%= i+1 %> </a>
+        <% } %>
+    </div>
+    <br>
     <a href="/editcomment?commentId=new">新建评论</a>
     <br>
     <a href="/UserGetter">查看用户信息</a>
@@ -82,5 +81,7 @@
     <br>
     <a href="/logout">退出</a>
 </table>
+</div>
+<script src="https://cdn.bootcss.com/mdui/0.4.3/js/mdui.js"></script>
 </body>
 </html>

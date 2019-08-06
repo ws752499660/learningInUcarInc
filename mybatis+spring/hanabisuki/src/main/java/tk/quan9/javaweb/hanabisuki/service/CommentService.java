@@ -1,6 +1,7 @@
 package tk.quan9.javaweb.hanabisuki.service;
 
 import tk.quan9.javaweb.hanabisuki.entity.Comment;
+import tk.quan9.javaweb.hanabisuki.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
