@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tk.quan9.javaweb.hanabisuki.repository.UserGroupPrepository">
+
+    <select id="getGroupNameById" parameterType="int" resultType="String">
+        select groupName from usergroup where id=#{groupId}
+    </select>
+
+</mapper>

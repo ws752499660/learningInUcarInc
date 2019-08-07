@@ -22,4 +22,6 @@ public interface CommentRepository {
     public void insertComment(Comment comment);
 
     public void updateComment(Comment comment);
+
+    public int getCommentUserGroupById(int id);
 }

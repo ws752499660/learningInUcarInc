@@ -21,4 +21,6 @@ public interface CommentService {
     public void deleteComment(int id);
 
     public List<Comment> getCommentListByUserId(int id);
+
+    public int getCommentUserGroupById(int id);
 }

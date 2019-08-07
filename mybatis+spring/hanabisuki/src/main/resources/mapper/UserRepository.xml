@@ -24,4 +24,8 @@
         where id=#{id}
     </update>
 
+    <select id="getUserListByGroupId" resultType="User" parameterType="int">
+        select * from user where groupId=#{groupId}
+    </select>
+
 </mapper>

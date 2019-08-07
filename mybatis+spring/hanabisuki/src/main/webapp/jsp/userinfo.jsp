@@ -19,6 +19,13 @@
 <body>
 <h1>花火BBS</h1>
 <h2>用户信息查看</h2>
+<h3 style="color: red">
+    <% if(session.getAttribute("userInfoWarning")!=null){
+        out.print(session.getAttribute("userInfoWarning"));
+        session.setAttribute("userInfoWarning",null);
+    }
+    %>
+</h3>
 <table border="1">
     <tr>
         <th>用户ID</th>

@@ -9,6 +9,7 @@ import java.util.List;
 public interface UserService {
     public User getUserById(int id);
     public List<User> getUserList();
+    public List<User> getUserListByGroupId(int groupId);
     public int getCommentCount(int id);
     public void updateUser(HttpServletRequest request, HttpSession session);
 }

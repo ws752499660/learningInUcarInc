@@ -7,17 +7,22 @@ public class User {
     private String email;
     private String phoneNum;
     private int commentCounts;
+    private int groupId;
+    private String type;
 
     public User(){
         super();
     }
 
-    public User(int id, String userName, String passWord, String email, String phoneNum) {
+    public User(int id, String userName, String passWord, String email, String phoneNum, int commentCounts, int groupId, String type) {
         this.id = id;
         this.userName = userName;
         this.passWord = passWord;
         this.email = email;
         this.phoneNum = phoneNum;
+        this.commentCounts = commentCounts;
+        this.groupId = groupId;
+        this.type = type;
         this.commentCounts = 0;
     }
 
@@ -67,5 +72,21 @@ public class User {
 
     public void setPhoneNum(String phoneNum) {
         this.phoneNum = phoneNum;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 }

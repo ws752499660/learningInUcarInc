@@ -60,18 +60,14 @@ public class CommentListController {
     public String editComment(HttpSession session,
                               HttpServletRequest request,HttpServletResponse response){
         String commentId=request.getParameter("commentId");
-        if(!commentId.equals("new")) {
-            Comment comment = commentService.getCommentById(Integer.parseInt(commentId));
-            User user=(User)session.getAttribute("LoginUser");
-            if(rightsCheck.userEditCheck(user.getId(),comment.getCommentUserId())) {
-                session.setAttribute("commentToEdit", comment);
-            }else {
-                redirect("/CommentGetter",response);
-                return null;
-            }
-        }else {
-            session.setAttribute("commentToEdit", null);
-        }
+        Comment comment = commentService.getCommentById(Integer.parseInt(commentId));
+        session.setAttribute("commentToEdit", comment);
+        return "editcomment";
+    }
+
+    @RequestMapping(method = RequestMethod.GET,value = {"/newComment"})
+    public String newComment(HttpSession session){
+        session.setAttribute("commentToEdit", null);
         return "editcomment";
     }
 
@@ -93,12 +89,8 @@ public class CommentListController {
             HttpServletRequest request,HttpServletResponse response){
         int commentId= Integer.parseInt(request.getParameter("commentId"));
         System.out.println("deleteing comment ID: "+commentId);
-        if(rightsCheck.deleteCheck(((User)session.getAttribute("LoginUser")).getId(),commentId)){
-            commentService.deleteComment(commentId);
-            session.setAttribute("deleteFlag",true);
-        }else {
-            session.setAttribute("deleteFlag",false);
-        }
+        commentService.deleteComment(commentId);
+        session.setAttribute("commentWarning","删除成功");
         redirect("/CommentGetter",response);
     }
 

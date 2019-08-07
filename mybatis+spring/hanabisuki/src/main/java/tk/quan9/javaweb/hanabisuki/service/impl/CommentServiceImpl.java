@@ -77,4 +77,9 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> getCommentListByUserId(int id) {
         return commentRepository.getCommentListByUserId(id);
     }
+
+    @Override
+    public int getCommentUserGroupById(int id) {
+        return commentRepository.getCommentUserGroupById(id);
+    }
 }

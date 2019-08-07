@@ -1,6 +1,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="tk.quan9.javaweb.hanabisuki.entity.Comment" %>
 <%@ page import="tk.quan9.javaweb.hanabisuki.entity.User" %>
+<%@ page import="org.springframework.beans.factory.annotation.Autowired" %>
+<%@ page import="tk.quan9.javaweb.hanabisuki.service.UserGroupService" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -17,18 +19,38 @@
 <h1>花火BBS</h1>
 <h2>欢迎你，<%
     User user=(User) session.getAttribute("LoginUser");
-                out.print(user.getUserName());%></h2>
+                out.print(user.getUserName());%>
+</h2>
+<h4>
+    您的用户组为
+    <%
+        out.print(session.getAttribute("UserGroupName"));
+    %>，您是
+    <%
+        switch (user.getType()){
+            case "AU":{
+                out.print("超级管理员");
+                break;
+            }
+            case "BU":{
+                out.print("普通管理员");
+                break;
+            }
+            case "CU":{
+                out.print("普通用户");
+                break;
+            }
+            default:out.print("普通用户");
+        }
+    %>
+
+</h4>
 <h2>评论列表</h2>
 <a class="mdui-btn mdui-btn-raised mdui-ripple" href="CommentGetter">刷新</a>
 <h3 style="color: red">
-<% if(session.getAttribute("deleteFlag")!=null){ %>
-    <% if((boolean)session.getAttribute("deleteFlag")){ %>
-    <b>删除成功！</b>
-    <% }else{ %>
-    <b>删除失败！</b>
-
-<%      }
-        session.setAttribute("deleteFlag",null);
+<% if(session.getAttribute("commentWarning")!=null){
+        out.print(session.getAttribute("commentWarning"));
+        session.setAttribute("commentWarning",null);
     }
 %>
 </h3>
@@ -73,7 +95,7 @@
         <% } %>
     </div>
     <br>
-    <a href="/editcomment?commentId=new">新建评论</a>
+    <a href="/newComment">新建评论</a>
     <br>
     <a href="/UserGetter">查看用户信息</a>
     <br>

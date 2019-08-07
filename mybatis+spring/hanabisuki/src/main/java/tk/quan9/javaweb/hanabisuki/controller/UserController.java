@@ -9,7 +9,6 @@ import tk.quan9.javaweb.hanabisuki.entity.User;
 import tk.quan9.javaweb.hanabisuki.service.CommentService;
 import tk.quan9.javaweb.hanabisuki.service.RightsCheck;
 import tk.quan9.javaweb.hanabisuki.service.UserService;
-import tk.quan9.javaweb.hanabisuki.service.impl.Security;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,7 +35,7 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.GET,value = {"/UserGetter"})
     public String userGetter(HttpSession session){
-        List<User> userList=userService.getUserList();
+        List<User> userList=(List)session.getAttribute("userList");
         for (User user:userList) {
             user.setCommentCounts(userService.getCommentCount(user.getId()));
         }
@@ -46,15 +45,7 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.GET,value = {"/userProfileProducer"})
     public String userProfileProducer(HttpSession session, HttpServletRequest request){
-        int userId=Integer.parseInt(request.getParameter("userId"));
-        if(rightsCheck.userEditCheck(userId,
-                ((User)session.getAttribute("LoginUser")).getId())) {
-            User user = userService.getUserById(userId);
-            session.setAttribute("userForProfile", user);
-            return "userprofile";
-        }else {
-            return "userinfo";
-        }
+        return "userprofile";
     }
 
     @RequestMapping(method = RequestMethod.POST,value = {"/userProfileEditor"})

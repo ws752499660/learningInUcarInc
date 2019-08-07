@@ -54,4 +54,9 @@ public class UserServiceImpl implements UserService {
         user.setEmail(StringEscapeUtils.escapeHtml4(request.getParameter("email")));
         userRepository.updateUser(user);
     }
+
+    @Override
+    public List<User> getUserListByGroupId(int groupId) {
+        return userRepository.getUserListByGroupId(groupId);
+    }
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import tk.quan9.javaweb.hanabisuki.entity.User;
 import tk.quan9.javaweb.hanabisuki.service.RightsCheck;
+import tk.quan9.javaweb.hanabisuki.service.UserGroupService;
 import tk.quan9.javaweb.hanabisuki.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,8 @@ public class IndexController {
     private UserServiceImpl userService;
     @Autowired
     private RightsCheck rightsCheck;
+    @Autowired
+    private UserGroupService userGroupService;
 
     private void redirect(String url,HttpServletResponse response){
         try {
@@ -41,6 +44,7 @@ public class IndexController {
             User user=userService.getUserById(id);
             System.out.println("id："+id+"  登录成功!");
             session.setAttribute("LoginUser",user);
+            session.setAttribute("UserGroupName",userGroupService.getGroupNameById(user.getGroupId()));
             redirect("/CommentGetter?commentPage=1",response);
         }
         else {

@@ -36,4 +36,9 @@
         where id=#{id}
     </update>
 
+    <select id="getCommentUserGroupById" parameterType="int" resultType="int">
+        select user.groupid from user,comment
+        where comment.id=#{id} and comment.commentUserId=user.id
+    </select>
+
 </mapper>
