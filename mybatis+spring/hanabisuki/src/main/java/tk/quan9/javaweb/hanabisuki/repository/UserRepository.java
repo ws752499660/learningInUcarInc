@@ -19,4 +19,8 @@ public interface UserRepository {
 
     public List<User> getUserListByGroupId(int groupId);
 
+    public void updateGroup(int userId,int groupId);
+
+    public void updateRole(int userId,String RoleName);
+
 }

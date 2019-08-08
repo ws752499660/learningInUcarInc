@@ -28,4 +28,18 @@
         select * from user where groupId=#{groupId}
     </select>
 
+    <update id="updateGroup" parameterType="int">
+        update user set
+        groupId=#{groupId}
+        where
+        id=#{userId}
+    </update>
+
+    <update id="updateRole">
+        update user set
+        type=#{1}
+        where
+        id=#{0}
+    </update>
+
 </mapper>

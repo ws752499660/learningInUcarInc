@@ -40,15 +40,20 @@ public class IndexController {
     public void Login(HttpSession session, HttpServletRequest request, HttpServletResponse response){
         int id=Integer.parseInt(request.getParameter("id"));
         String passWord=request.getParameter("passWord");
-        if(rightsCheck.loginCheck(id,passWord)){
-            User user=userService.getUserById(id);
-            System.out.println("id："+id+"  登录成功!");
-            session.setAttribute("LoginUser",user);
-            session.setAttribute("UserGroupName",userGroupService.getGroupNameById(user.getGroupId()));
-            redirect("/CommentGetter?commentPage=1",response);
-        }
-        else {
-            redirect("/",response);
+        User user=userService.getUserById(id);
+        if(user!=null) {
+            if (rightsCheck.loginCheck(id, passWord)) {
+                System.out.println("id：" + id + "  登录成功!");
+                session.setAttribute("LoginUser", user);
+                session.setAttribute("UserGroupName", userGroupService.getGroupNameById(user.getGroupId()));
+                redirect("/CommentGetter?commentPage=1", response);
+            }else {
+                session.setAttribute("indexWarning", "用户名或密码有误");
+                redirect("/", response);
+            }
+        }else {
+            session.setAttribute("indexWarning", "用户名或密码有误");
+            redirect("/", response);
         }
     }
 }

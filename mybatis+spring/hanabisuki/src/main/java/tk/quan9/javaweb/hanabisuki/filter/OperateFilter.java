@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import tk.quan9.javaweb.hanabisuki.entity.Comment;
 import tk.quan9.javaweb.hanabisuki.entity.User;
 import tk.quan9.javaweb.hanabisuki.service.CommentService;
+import tk.quan9.javaweb.hanabisuki.service.RightsCheck;
 import tk.quan9.javaweb.hanabisuki.service.UserService;
 
 import javax.servlet.*;
@@ -16,12 +17,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @WebFilter(filterName = "OperateFilter",urlPatterns =
-        {"/editcomment","/UserGetter","/deleteComment","/userProfileProducer"})
+        {"/CommentGetter","/editcomment","/UserGetter",
+                "/deleteComment","/userProfileProducer",
+                "/rightsControl","/changeGroup"})
 public class OperateFilter implements Filter {
     @Autowired
     private CommentService commentService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private RightsCheck rightsCheck;
 
     private HttpServletRequest request;
     private HttpServletResponse response;
@@ -71,14 +76,34 @@ public class OperateFilter implements Filter {
         this.servletResponse=servletResponse;
         this.filterChain=filterChain;
         String url=request.getRequestURI();
-        if(url.contains("/editcomment") || url.contains("/deleteComment")){
+        if(url.contains("/CommentGetter")){
+            commentViewerCheck();
+        }else if(url.contains("/editcomment") || url.contains("/deleteComment")) {
             commentCheck();
         }else if(url.contains("/UserGetter")){
             userGetterCheck();
         }else if(url.contains("/userProfileProducer")) {
             userEditCheck();
+        } else if(url.contains("/rightsControl") || url.contains("/changeGroup")){
+            rightsControlCheck();
         } else {
             goHome(response);
+        }
+    }
+
+    private void commentViewerCheck(){
+        HttpSession session=request.getSession();
+        User user=(User)session.getAttribute("LoginUser");
+        ArrayList userRight=rightsCheck.getRightsByRoleName(user.getType());
+        if(userRight.get(0).equals("1")){
+            continueForward();
+        }else {
+            session.setAttribute("indexWarning","您没有权限登录");
+            try {
+                response.sendRedirect("/");
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -107,59 +132,38 @@ public class OperateFilter implements Filter {
                 return;
             }
         }
-        switch (user.getType()) {
-            case "AU": {
-                continueForward();
-                break;
-            }
-            case "BU": {
-                if(user.getGroupId()==commentService.getCommentUserGroupById(comment.getId())){
-                    continueForward();
-                }else {
-                    setCommentWarning("操作失败");
-                    goHome(response);
-                }
-                break;
-            }
-            case "CU":{
-                if(user.getId()==comment.getCommentUserId()){
-                    continueForward();
-                }else {
-                    setCommentWarning("操作失败");
-                    goHome(response);
-                }
-                break;
-            }
-            default:{
-                setCommentWarning("操作失败");
-                goHome(response);
-            }
+        ArrayList userRight=rightsCheck.getRightsByRoleName(user.getType());
+        if(user.getGroupId()==commentService.getCommentUserGroupById(comment.getId())
+            && userRight.get(4).equals("1")){
+            continueForward();
+        }else if(user.getId()==comment.getCommentUserId() && userRight.get(2).equals("1")){
+            continueForward();
+        }else {
+            setCommentWarning("操作失败");
+            goHome(response);
         }
     }
 
     private void userGetterCheck(){
         HttpSession session=request.getSession();
         User operateUser=(User)session.getAttribute("LoginUser");
-        switch (operateUser.getType()){
-            case "AU":{
-                List<User> userList=userService.getUserList();
-                session.setAttribute("userList",userList);
-                continueForward();
-                break;
-            }
-            case "BU":{
-                List<User> userList=userService.getUserListByGroupId(operateUser.getGroupId());
-                session.setAttribute("userList",userList);
-                continueForward();
-                break;
-            }
-            case "CU":{
-                List<User> userList=new ArrayList<>();
-                userList.add(operateUser);
-                session.setAttribute("userList",userList);
-                continueForward();
-                break;
-            }
+        ArrayList userRight=rightsCheck.getRightsByRoleName(operateUser.getType());
+        if(userRight.get(6).equals("1")){
+            List<User> userList=userService.getUserList();
+            session.setAttribute("userList",userList);
+            continueForward();
+        }else if(userRight.get(3).equals("1")){
+            List<User> userList=userService.getUserListByGroupId(operateUser.getGroupId());
+            session.setAttribute("userList",userList);
+            continueForward();
+        }else if(userRight.get(0).equals("1")){
+            List<User> userList=new ArrayList<>();
+            userList.add(operateUser);
+            session.setAttribute("userList",userList);
+            continueForward();
+        }else {
+            setCommentWarning("操作失败");
+            goHome(response);
         }
     }
 
@@ -167,39 +171,69 @@ public class OperateFilter implements Filter {
         HttpSession session=request.getSession();
         int userId=Integer.parseInt(request.getParameter("userId"));
         User operateUser=(User)session.getAttribute("LoginUser");
-        User targetUser=userService.getUserById(userId);
-        switch (operateUser.getType()){
-            case "AU":{
+        if(operateUser!=null) {
+            User targetUser = userService.getUserById(userId);
+            ArrayList userRight = rightsCheck.getRightsByRoleName(operateUser.getType());
+            if (userRight.get(5).equals("1")) {
                 session.setAttribute("userForProfile", targetUser);
                 continueForward();
-                break;
-            }
-            case "BU":{
-                if(targetUser.getGroupId()==operateUser.getGroupId()){
-                    session.setAttribute("userForProfile", targetUser);
-                    continueForward();
-                    break;
-                }else {
-                    setUserInfoWarning("操作失败！");
-                    goUserInfo(response);
-                    return;
-                }
-            }
-            case "CU":{
-                if(targetUser.getId()==operateUser.getId()){
-                    session.setAttribute("userForProfile", targetUser);
-                    continueForward();
-                    break;
-                }else {
-                    setUserInfoWarning("操作失败！");
-                    goUserInfo(response);
-                    return;
-                }
-            }
-            default:{
-                setUserInfoWarning("未知错误！");
+            } else if (userRight.get(3).equals("1") && targetUser.getGroupId() == operateUser.getGroupId()) {
+                session.setAttribute("userForProfile", targetUser);
+                continueForward();
+            } else if (userRight.get(0).equals("1") && targetUser.getId() == operateUser.getId()) {
+                session.setAttribute("userForProfile", targetUser);
+                continueForward();
+            } else {
+                setUserInfoWarning("操作失败！");
                 goUserInfo(response);
             }
+        } else {
+            setUserInfoWarning("操作失败！");
+            goUserInfo(response);
+        }
+//        switch (operateUser.getType()){
+//            case "AU":{
+//                session.setAttribute("userForProfile", targetUser);
+//                continueForward();
+//                break;
+//            }
+//            case "BU":{
+//                if(targetUser.getGroupId()==operateUser.getGroupId()){
+//                    session.setAttribute("userForProfile", targetUser);
+//                    continueForward();
+//                    break;
+//                }else {
+//                    setUserInfoWarning("操作失败！");
+//                    goUserInfo(response);
+//                    return;
+//                }
+//            }
+//            case "CU":{
+//                if(targetUser.getId()==operateUser.getId()){
+//                    session.setAttribute("userForProfile", targetUser);
+//                    continueForward();
+//                    break;
+//                }else {
+//                    setUserInfoWarning("操作失败！");
+//                    goUserInfo(response);
+//                    return;
+//                }
+//            }
+//            default:{
+//                setUserInfoWarning("未知错误！");
+//                goUserInfo(response);
+//            }
+//        }
+    }
+
+    private void rightsControlCheck() {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("LoginUser");
+        if(user.getType().equals("AU")){
+            continueForward();
+        }else {
+            setCommentWarning("不是超级管理员无法使用该功能");
+            goHome(response);
         }
     }
 }

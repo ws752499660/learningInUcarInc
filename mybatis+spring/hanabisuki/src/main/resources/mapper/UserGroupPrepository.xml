@@ -8,4 +8,8 @@
         select groupName from usergroup where id=#{groupId}
     </select>
 
+    <select id="getAllUserGroup" resultType="UserGroup">
+        select * from usergroup
+    </select>
+
 </mapper>

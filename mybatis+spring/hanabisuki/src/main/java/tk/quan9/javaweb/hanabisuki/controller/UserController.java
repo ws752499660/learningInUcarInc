@@ -1,14 +1,20 @@
 package tk.quan9.javaweb.hanabisuki.controller;
 
+import com.sun.deploy.net.HttpResponse;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import tk.quan9.javaweb.hanabisuki.entity.Comment;
+import tk.quan9.javaweb.hanabisuki.entity.Role;
 import tk.quan9.javaweb.hanabisuki.entity.User;
+import tk.quan9.javaweb.hanabisuki.entity.UserGroup;
 import tk.quan9.javaweb.hanabisuki.service.CommentService;
 import tk.quan9.javaweb.hanabisuki.service.RightsCheck;
+import tk.quan9.javaweb.hanabisuki.service.UserGroupService;
 import tk.quan9.javaweb.hanabisuki.service.UserService;
+import tk.quan9.javaweb.hanabisuki.service.impl.Security;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,11 +24,13 @@ import java.util.List;
 @Controller
 public class UserController {
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    RightsCheck rightsCheck;
+    private RightsCheck rightsCheck;
     @Autowired
-    CommentService commentService;
+    private CommentService commentService;
+    @Autowired
+    private UserGroupService userGroupService;
 
 
     private void redirect(String url, HttpServletResponse response){
@@ -61,5 +69,42 @@ public class UserController {
         List<Comment> commentList=commentService.getCommentListByUserId(userId);
         session.setAttribute("commentListByUser",commentList);
         return "search";
+    }
+
+    @RequestMapping(method = RequestMethod.GET,value = {"/rightsControl"})
+    public String rightsControl(HttpSession session){
+        List<UserGroup> groupList=userGroupService.getAllUserGroup();
+        List<Role> roleList=userService.getAllRoles();
+        session.setAttribute("groupList",groupList);
+        session.setAttribute("roleList",roleList);
+        return "rightsControl";
+    }
+
+    @RequestMapping(method = RequestMethod.POST,value = {"/changeGroup"})
+    public String changeGroup(HttpSession session,
+                            HttpServletRequest request,HttpServletResponse response){
+        String userIdGet=request.getParameter("userId");
+        userIdGet= StringEscapeUtils.escapeHtml4(userIdGet);
+        String groupId=request.getParameter("newGroupId");
+        groupId= StringEscapeUtils.escapeHtml4(groupId);
+        User user=userService.getUserById(Integer.parseInt(userIdGet));
+        if(user!=null) {
+            userService.updateGroup(user.getId(),Integer.parseInt(groupId));
+        }
+        return "rightsControl";
+    }
+
+    @RequestMapping(method = RequestMethod.POST,value = {"/changerole"})
+    public String changeRole(HttpSession session,
+                             HttpServletRequest request, HttpResponse response){
+        String userIdGet=request.getParameter("userId");
+        userIdGet= StringEscapeUtils.escapeHtml4(userIdGet);
+        String roleName=request.getParameter("roleName");
+        roleName= StringEscapeUtils.escapeHtml4(roleName);
+        User user=userService.getUserById(Integer.parseInt(userIdGet));
+        if(user!=null) {
+            userService.updateRole(user.getId(),roleName);
+        }
+        return "rightsControl";
     }
 }

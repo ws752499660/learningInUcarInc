@@ -16,6 +16,11 @@
             margin: 0 auto;
             top: 110px;
             width: 500px;">
+        <% if(session.getAttribute("indexWarning")!=null){
+            out.print(session.getAttribute("indexWarning"));
+            session.setAttribute("indexWarning",null);
+        }
+        %>
         <form action="/Login" method="POST">
             <div class="mdui-textfield mdui-textfield-floating-label">
                     <label class="mdui-textfield-label">用户ID</label>
