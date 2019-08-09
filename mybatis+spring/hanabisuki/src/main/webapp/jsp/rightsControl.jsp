@@ -20,6 +20,13 @@
 <div style="position: relative;text-align: center;">
     <h1 class="mdui-color-light-blue-900">花火BBS</h1>
     <h2>权限控制页</h2>
+    <h3 style="color: red">
+        <% if(session.getAttribute("rsWarning")!=null){
+            out.print(session.getAttribute("rsWarning"));
+            session.setAttribute("rsWarning",null);
+        }
+        %>
+    </h3>
     <div class="mdui-table-fluid" style="width: 1000px;margin: 0 auto">
         <h4>用户组别调整</h4>
         <form action="/changeGroup" method="post">
@@ -57,7 +64,7 @@
 
     <div class="mdui-table-fluid" style="width: 1000px;margin: 0 auto;margin-top: 20px;">
         <h4>角色权限调整</h4>
-        <form action="/changerole" method="post">
+        <form action="/changeRole" method="post">
             <table class="mdui-table">
                 <tr>
                     <td>用户id：</td>

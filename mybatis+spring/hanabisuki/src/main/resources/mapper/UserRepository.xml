@@ -37,9 +37,9 @@
 
     <update id="updateRole">
         update user set
-        type=#{1}
+        type=#{roleName}
         where
-        id=#{0}
+        id=#{userId}
     </update>
 
 </mapper>

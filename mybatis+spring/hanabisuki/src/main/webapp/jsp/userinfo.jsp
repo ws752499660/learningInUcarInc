@@ -2,6 +2,9 @@
 <%@ page import="java.util.List" %>
 <%@ page import="tk.quan9.javaweb.hanabisuki.entity.User" %>
 <%@ page import="tk.quan9.javaweb.hanabisuki.service.impl.Security" %>
+<%@ page import="tk.quan9.javaweb.hanabisuki.service.UserGroupService" %>
+<%@ page import="tk.quan9.javaweb.hanabisuki.service.impl.UserGroupServiceImpl" %>
+<%@ page import="org.springframework.beans.factory.annotation.Autowired" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
@@ -37,9 +40,13 @@
                 <th>发言条数</th>
                 <th>电子邮件</th>
                 <th>电话号码</th>
+                <th>用户组别</th>
+                <th>用户角色</th>
                 <th>操作</th>
             </tr>
             <%
+
+                UserGroupService userGroupService=(UserGroupService)session.getAttribute("userGroupService");
                 List<User> userList=(List)session.getAttribute("userList");
                 for(int i=0;i<userList.size();i++){
             %>
@@ -49,12 +56,37 @@
                     <td><%=userList.get(i).getCommentCounts()%></td>
                     <td><%=userList.get(i).getEmail()%></td>
                     <td><%=userList.get(i).getPhoneNum()%></td>
+                    <td><%=userGroupService.getGroupNameById(userList.get(i).getGroupId())%></td>
+                    <td><%
+                        switch (userList.get(i).getType()){
+                            case "AU":{
+                                out.print("超级管理员");
+                                break;
+                            }
+                            case "BU":{
+                                out.print("组管理员");
+                                break;
+                            }
+                            case "CU":{
+                                out.print("普通用户");
+                                break;
+                            }
+                            case "BAN":{
+                                out.print("封禁");
+                                break;
+                            }
+                            default:{
+                                out.print("");
+                            }
+                        }%>
+                    </td>
                     <td>
                         <a class="mdui-btn mdui-ripple" href="/userProfileProducer?userId=<%=String.valueOf(userList.get(i).getId())%>">修改</a>
                     </td>
                 </tr>
             <%
                 }
+                session.setAttribute("userGroupService",null);
             %>
         </table>
     </div>

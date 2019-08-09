@@ -1,5 +1,6 @@
 package tk.quan9.javaweb.hanabisuki.filter;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.quan9.javaweb.hanabisuki.entity.Comment;
 import tk.quan9.javaweb.hanabisuki.entity.User;
@@ -19,7 +20,7 @@ import java.util.List;
 @WebFilter(filterName = "OperateFilter",urlPatterns =
         {"/CommentGetter","/editcomment","/UserGetter",
                 "/deleteComment","/userProfileProducer",
-                "/rightsControl","/changeGroup"})
+                "/rightsControl","/changeGroup","/changeRole"})
 public class OperateFilter implements Filter {
     @Autowired
     private CommentService commentService;
@@ -68,6 +69,10 @@ public class OperateFilter implements Filter {
         request.getSession().setAttribute("userInfoWarning","没有权限："+warning);
     }
 
+    private void setRsWarning(String warning){
+        request.getSession().setAttribute("rsWarning",warning);
+    }
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         this.request=(HttpServletRequest) servletRequest;
@@ -84,7 +89,9 @@ public class OperateFilter implements Filter {
             userGetterCheck();
         }else if(url.contains("/userProfileProducer")) {
             userEditCheck();
-        } else if(url.contains("/rightsControl") || url.contains("/changeGroup")){
+        } else if(url.contains("/rightsControl")
+                || url.contains("/changeGroup")
+                || url.contains("/changeRole")){
             rightsControlCheck();
         } else {
             goHome(response);
@@ -98,7 +105,7 @@ public class OperateFilter implements Filter {
         if(userRight.get(0).equals("1")){
             continueForward();
         }else {
-            session.setAttribute("indexWarning","您没有权限登录");
+            session.setAttribute("indexWarning","您没有权限登录或已被封禁");
             try {
                 response.sendRedirect("/");
             }catch (Exception e){
@@ -228,6 +235,22 @@ public class OperateFilter implements Filter {
 
     private void rightsControlCheck() {
         HttpSession session = request.getSession();
+        if(request.getMethod().equals("POST")){
+            String userIdGet=request.getParameter("userId");
+            userIdGet= StringEscapeUtils.escapeHtml4(userIdGet);
+            User rcUser=userService.getUserById(Integer.parseInt(userIdGet));
+            if(rcUser!=null) {
+                session.setAttribute("rcUser",rcUser);
+            }else {
+                setRsWarning("操作失败：输入用户id查无此人");
+                try {
+                    response.sendRedirect("/redirectJsp/rightsControl");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                return;
+            }
+        }
         User user = (User) session.getAttribute("LoginUser");
         if(user.getType().equals("AU")){
             continueForward();

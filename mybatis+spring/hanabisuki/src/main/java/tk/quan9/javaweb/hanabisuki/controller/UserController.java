@@ -48,6 +48,7 @@ public class UserController {
             user.setCommentCounts(userService.getCommentCount(user.getId()));
         }
         session.setAttribute("userList",userList);
+        session.setAttribute("userGroupService",userGroupService);
         return "userinfo";
     }
 
@@ -83,28 +84,28 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST,value = {"/changeGroup"})
     public String changeGroup(HttpSession session,
                             HttpServletRequest request,HttpServletResponse response){
-        String userIdGet=request.getParameter("userId");
-        userIdGet= StringEscapeUtils.escapeHtml4(userIdGet);
         String groupId=request.getParameter("newGroupId");
         groupId= StringEscapeUtils.escapeHtml4(groupId);
-        User user=userService.getUserById(Integer.parseInt(userIdGet));
+        User user=(User)session.getAttribute("rcUser");
         if(user!=null) {
             userService.updateGroup(user.getId(),Integer.parseInt(groupId));
         }
+        session.setAttribute("rcUser",null);
+        session.setAttribute("rsWarning","操作成功");
         return "rightsControl";
     }
 
-    @RequestMapping(method = RequestMethod.POST,value = {"/changerole"})
+    @RequestMapping(method = RequestMethod.POST,value = {"/changeRole"})
     public String changeRole(HttpSession session,
-                             HttpServletRequest request, HttpResponse response){
-        String userIdGet=request.getParameter("userId");
-        userIdGet= StringEscapeUtils.escapeHtml4(userIdGet);
+                             HttpServletRequest request, HttpServletResponse response){
         String roleName=request.getParameter("roleName");
         roleName= StringEscapeUtils.escapeHtml4(roleName);
-        User user=userService.getUserById(Integer.parseInt(userIdGet));
+        User user=(User)session.getAttribute("rcUser");
         if(user!=null) {
             userService.updateRole(user.getId(),roleName);
         }
+        session.setAttribute("rcUser",null);
+        session.setAttribute("rsWarning","操作成功");
         return "rightsControl";
     }
 }

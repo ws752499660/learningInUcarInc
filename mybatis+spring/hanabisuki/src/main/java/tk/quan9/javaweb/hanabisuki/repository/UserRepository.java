@@ -21,6 +21,6 @@ public interface UserRepository {
 
     public void updateGroup(int userId,int groupId);
 
-    public void updateRole(int userId,String RoleName);
+    public void updateRole(int userId,String roleName);
 
 }
