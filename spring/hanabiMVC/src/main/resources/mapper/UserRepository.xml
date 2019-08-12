@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hanabiMVC.repository.UserRepository">
+    <select id="getUserById" resultType="User" parameterType="int">
+        select * from user where id = #{id}
+    </select>
+
+    <select id="getUserList" resultType="User">
+        select * from user
+    </select>
+
+    <select id="getCommentCount" resultType="Integer">
+        SELECT count(*) from comment WHERE commentUserId= #{id}
+    </select>
+
+    <update id="updateUser" parameterType="User">
+        UPDATE user SET
+            userName=#{userName},
+            passWord=#{passWord},
+            email=#{email},
+            phoneNum=#{phoneNum}
+        where id=#{id}
+    </update>
+
+    <select id="getUserListByGroupId" resultType="User" parameterType="int">
+        select * from user where groupId=#{groupId}
+    </select>
+
+    <update id="updateGroup" parameterType="int">
+        update user set
+        groupId=#{groupId}
+        where
+        id=#{userId}
+    </update>
+
+    <update id="updateRole">
+        update user set
+        type=#{roleName}
+        where
+        id=#{userId}
+    </update>
+
+</mapper>

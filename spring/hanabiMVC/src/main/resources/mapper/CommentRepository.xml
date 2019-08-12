@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hanabiMVC.repository.CommentRepository">
+    <select id="getCommentCounts" resultType="int">
+        SELECT count(*) FROM comment
+    </select>
+
+    <select id="getCommentListWithPages" parameterType="int" resultType="Comment">
+        SELECT * FROM comment LIMIT 10 offset #{offset}
+    </select>
+
+    <delete id="deleteComment" parameterType="int">
+        DELETE FROM comment where id=#{id}
+    </delete>
+
+    <select id="getCommentListByUserId" parameterType="int" resultType="Comment">
+        SELECT * FROM comment where commentUserId= #{commentUserId}
+    </select>
+
+    <select id="getCommentById" parameterType="int" resultType="Comment">
+        SELECT * FROM comment where id=#{id}
+    </select>
+
+    <insert id="insertComment" parameterType="Comment" useGeneratedKeys="true">
+        insert INTO comment (title, detail, createTime, editTime, commentUserId)
+        value (#{title},#{detail},#{createTime},#{editTime},#{commentUserId})
+    </insert>
+
+    <update id="updateComment" parameterType="Comment">
+        update comment set
+            title=#{title},
+            detail=#{detail},
+            editTime=#{editTime}
+        where id=#{id}
+    </update>
+
+    <select id="getCommentUserGroupById" parameterType="int" resultType="int">
+        select user.groupid from user,comment
+        where comment.id=#{id} and comment.commentUserId=user.id
+    </select>
+
+</mapper>
