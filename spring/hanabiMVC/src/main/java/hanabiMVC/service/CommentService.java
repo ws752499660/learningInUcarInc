@@ -2,11 +2,13 @@ package hanabiMVC.service;
 
 
 import hanabiMVC.entity.Comment;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+@Service
 public interface CommentService {
     public int getCommentCounts();
 

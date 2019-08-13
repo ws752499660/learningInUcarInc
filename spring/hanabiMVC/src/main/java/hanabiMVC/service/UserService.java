@@ -4,11 +4,13 @@ package hanabiMVC.service;
 
 import hanabiMVC.entity.Role;
 import hanabiMVC.entity.User;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+@Service
 public interface UserService {
     public User getUserById(int id);
     public List<User> getUserList();

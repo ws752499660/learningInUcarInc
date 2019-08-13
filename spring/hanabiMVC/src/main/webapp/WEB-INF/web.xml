@@ -28,4 +28,67 @@
     <url-pattern>/</url-pattern>
   </servlet-mapping>
 
+  <filter>
+        <filter-name>DelegatingFilterProxy</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <init-param>
+            <param-name>targetBeanName</param-name>
+            <param-value>operateFilter</param-value>
+        </init-param>
+        <init-param>
+            <param-name>targetFilterLifecycle</param-name>
+            <param-value>true</param-value>
+        </init-param>
+  </filter>
+  <filter-mapping>
+        <filter-name>DelegatingFilterProxy</filter-name>
+        <url-pattern>/CommentGetter</url-pattern>  
+  </filter-mapping>
+  <filter-mapping>
+        <filter-name>DelegatingFilterProxy</filter-name>
+        <url-pattern>/editcomment</url-pattern>  
+  </filter-mapping>
+  <filter-mapping>
+        <filter-name>DelegatingFilterProxy</filter-name>
+        <url-pattern>/UserGetter</url-pattern>  
+  </filter-mapping>
+  <filter-mapping>
+        <filter-name>DelegatingFilterProxy</filter-name>
+        <url-pattern>/deleteComment</url-pattern>  
+  </filter-mapping>
+  <filter-mapping>
+        <filter-name>DelegatingFilterProxy</filter-name>
+        <url-pattern>/userProfileProducer</url-pattern>  
+  </filter-mapping>
+  <filter-mapping>
+        <filter-name>DelegatingFilterProxy</filter-name>
+        <url-pattern>/rightsControl</url-pattern>  
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>DelegatingFilterProxy</filter-name>
+    <url-pattern>/changeGroup</url-pattern>  
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>DelegatingFilterProxy</filter-name>
+    <url-pattern>/changeRole</url-pattern>  
+  </filter-mapping>
+
+
+  <filter>
+    <filter-name>characterEncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>characterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
 </web-app>

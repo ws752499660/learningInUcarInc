@@ -48,8 +48,11 @@
         <property name="SqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
     </bean>
 
-    <bean id="loginFilter" class="hanabiMVC.filter.LoginFilter"></bean>
-    <bean id="operateFilter" class="hanabiMVC.filter.OperateFilter"></bean>
+    <bean id="commentService" class="hanabiMVC.service.impl.CommentServiceImpl"/>
+    <bean id="userService" class="hanabiMVC.service.impl.UserServiceImpl"/>
+    <bean id="rightsCheck" class="hanabiMVC.service.impl.RightsCheckImpl"/>
+    <bean id="loginFilter" class="hanabiMVC.filter.LoginFilter"/>
+    <bean id="operateFilter" class="hanabiMVC.filter.OperateFilter"/>
 
 
 </beans>

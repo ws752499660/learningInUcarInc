@@ -7,6 +7,8 @@ import hanabiMVC.service.RightsCheck;
 import hanabiMVC.service.UserService;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 
 import javax.servlet.*;
@@ -18,11 +20,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebFilter(filterName = "OperateFilter",urlPatterns =
-        {"/CommentGetter","/editcomment","/UserGetter",
-                "/deleteComment","/userProfileProducer",
-                "/rightsControl","/changeGroup","/changeRole"})
+//@Component
+//@WebFilter(filterName = "OperateFilter",urlPatterns =
+//        {"/CommentGetter","/editcomment","/UserGetter",
+//                "/deleteComment","/userProfileProducer",
+//                "/rightsControl","/changeGroup","/changeRole"})
 public class OperateFilter implements Filter {
+
     @Autowired
     private CommentService commentService;
     @Autowired
@@ -259,5 +263,15 @@ public class OperateFilter implements Filter {
             setCommentWarning("不是超级管理员无法使用该功能");
             goHome(response);
         }
+    }
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+
+    }
+
+    @Override
+    public void destroy() {
+
     }
 }
