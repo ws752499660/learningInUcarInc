@@ -99,6 +99,3 @@
 * 组ID
 * 组名
 * 组种类
-
-## ER图
-![er.JPG](https://i.loli.net/2019/08/09/tIKc37bHRMerJlP.jpg)
