@@ -75,7 +75,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.GET,value = {"/rightsControl"})
     public String rightsControl(HttpSession session){
         List<UserGroup> groupList=userGroupService.getAllUserGroup();
-        List<Role> roleList=userService.getAllRoles();
+        List<Role> roleList=rightsCheck.getAllRoles();
         session.setAttribute("groupList",groupList);
         session.setAttribute("roleList",roleList);
         return "rightsControl";

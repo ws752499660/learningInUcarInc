@@ -2,6 +2,7 @@ package tk.quan9.javaweb.hanabisuki.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.quan9.javaweb.hanabisuki.entity.Role;
 import tk.quan9.javaweb.hanabisuki.entity.User;
 import tk.quan9.javaweb.hanabisuki.repository.RoleRightsRepository;
 import tk.quan9.javaweb.hanabisuki.repository.UserRepository;
@@ -37,5 +38,10 @@ public class RightsCheckImpl implements RightsCheck {
             rights.set(7-i,temp);
         }
         return rights;
+    }
+
+    @Override
+    public List<Role> getAllRoles() {
+        return roleRightsRepository.getAllRole();
     }
 }

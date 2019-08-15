@@ -1,5 +1,6 @@
 package tk.quan9.javaweb.hanabisuki.entity;
 
+
 public class Role {
     private String roleName;
     private String rights;

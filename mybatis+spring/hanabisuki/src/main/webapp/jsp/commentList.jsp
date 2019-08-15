@@ -51,6 +51,7 @@
 <a href="/UserGetter" class="mdui-btn mdui-ripple">查看用户信息</a>
 <a href="/redirectJsp/search" class="mdui-btn mdui-ripple">通过用户ID搜索发言</a>
 <a href="/rightsControl"class="mdui-btn mdui-ripple">权限/组别控制</a>
+<a href="/log"class="mdui-btn mdui-ripple">查看操作记录</a>
 
 
 <h3 style="color: red">

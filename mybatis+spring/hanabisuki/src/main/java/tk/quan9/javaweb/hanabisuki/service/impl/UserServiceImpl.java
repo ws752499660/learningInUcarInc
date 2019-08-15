@@ -3,9 +3,7 @@ package tk.quan9.javaweb.hanabisuki.service.impl;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tk.quan9.javaweb.hanabisuki.entity.Role;
 import tk.quan9.javaweb.hanabisuki.entity.User;
-import tk.quan9.javaweb.hanabisuki.repository.RoleRightsRepository;
 import tk.quan9.javaweb.hanabisuki.repository.UserRepository;
 import tk.quan9.javaweb.hanabisuki.service.UserService;
 
@@ -17,8 +15,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private RoleRightsRepository roleRightsRepository;
+
 
     private String codeTrans(String a){
         try {
@@ -72,10 +69,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateRole(int userId, String roleName) {
         userRepository.updateRole(userId,roleName);
-    }
-
-    @Override
-    public List<Role> getAllRoles() {
-        return roleRightsRepository.getAllRole();
     }
 }

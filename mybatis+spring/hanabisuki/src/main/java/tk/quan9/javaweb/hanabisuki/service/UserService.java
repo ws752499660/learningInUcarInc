@@ -15,5 +15,4 @@ public interface UserService {
     public void updateUser(HttpServletRequest request, HttpSession session);
     public void updateGroup(int userId,int groupId);
     public void updateRole(int userId,String roleName);
-    public List<Role> getAllRoles();
 }
