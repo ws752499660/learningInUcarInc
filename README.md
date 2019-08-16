@@ -39,7 +39,7 @@ jsp,servlet javaweb示例工程
 
 ## mybatis+spring  
 mybatis和spring整合项目
-* hanabisuki 花火溯琦——花火BBS重构(权限管理施工中)
+* hanabisuki 花火溯琦——花火BBS重构
 
 ## spring  
 * hanabiMVC 花火溯琦基于Spring MVC的重构版本
