@@ -70,4 +70,9 @@ public class UserServiceImpl implements UserService {
     public void updateRole(int userId, String roleName) {
         userRepository.updateRole(userId,roleName);
     }
+
+    @Override
+    public void updateUserPicture(int userId, int pictureId) {
+        userRepository.updatePictureIdById(userId,pictureId);
+    }
 }

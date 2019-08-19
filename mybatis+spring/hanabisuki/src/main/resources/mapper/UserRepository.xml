@@ -20,7 +20,8 @@
             userName=#{userName},
             passWord=#{passWord},
             email=#{email},
-            phoneNum=#{phoneNum}
+            phoneNum=#{phoneNum},
+            pictureId=#{pictureId}
         where id=#{id}
     </update>
 
@@ -38,6 +39,13 @@
     <update id="updateRole">
         update user set
         type=#{roleName}
+        where
+        id=#{userId}
+    </update>
+
+    <update id="updatePictureIdById" parameterType="int">
+        update user set
+        pictureId=#{pictureId}
         where
         id=#{userId}
     </update>

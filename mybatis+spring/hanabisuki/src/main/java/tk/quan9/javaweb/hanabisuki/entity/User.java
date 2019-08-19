@@ -9,12 +9,14 @@ public class User {
     private int commentCounts;
     private int groupId;
     private String type;
+    private int pictureId;
+    private String pictureName;
 
     public User(){
         super();
     }
 
-    public User(int id, String userName, String passWord, String email, String phoneNum, int commentCounts, int groupId, String type) {
+    public User(int id, String userName, String passWord, String email, String phoneNum, int commentCounts, int groupId, String type,int pictureId) {
         this.id = id;
         this.userName = userName;
         this.passWord = passWord;
@@ -24,6 +26,7 @@ public class User {
         this.groupId = groupId;
         this.type = type;
         this.commentCounts = 0;
+        this.pictureId=pictureId;
     }
 
     public int getCommentCounts() {
@@ -88,5 +91,21 @@ public class User {
 
     public void setGroupId(int groupId) {
         this.groupId = groupId;
+    }
+
+    public int getPictureId() {
+        return pictureId;
+    }
+
+    public void setPictureId(int pictureId) {
+        this.pictureId = pictureId;
+    }
+
+    public String getPictureName() {
+        return pictureName;
+    }
+
+    public void setPictureName(String pictureName) {
+        this.pictureName = pictureName;
     }
 }

@@ -1,4 +1,6 @@
-<%@ page import="tk.quan9.javaweb.hanabisuki.entity.User" %><%--
+<%@ page import="tk.quan9.javaweb.hanabisuki.entity.User" %>
+<%@ page import="tk.quan9.javaweb.hanabisuki.entity.Picture" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2019/7/31
@@ -21,7 +23,7 @@
         User user=(User)session.getAttribute("userForProfile");
     %>
     <div class="mdui-table-fluid" style="width: 1000px;margin: 0 auto">
-    <form method="post" action="/userProfileEditor">
+    <form method="post" action="/userProfileEditor" enctype="multipart/form-data">
         <table class="mdui-table">
             <tr>
                 <td>用户ID：</td>
@@ -37,6 +39,27 @@
                 <td>密码：</td>
                 <td>
                     <input type="password" class="mdui-textfield-input" value="" name="passWord">
+                </td>
+            </tr>
+            <tr>
+                <td>头像：</td>
+                <td>
+                    <img src="<%="picture/"+user.getPictureName()%>" style="max-height: 60px;max-width: 60px"/>
+                    <br>
+                    <b>从已有图像中选择</b>
+                    <select class="mdui-select" name="newPicture">
+                        <%
+                            List<Picture> pictureList=(List)session.getAttribute("pictureList");
+                            for(Picture picture:pictureList){
+                        %>
+                        <option value="<%=picture.getId()%>">
+                            <%=picture.getFileName()%>
+                        </option>
+                        <% } %>
+                    </select>
+                    <br>
+                    <b>或者上传新的：</b>
+                    <input type="file" name="picture"/>
                 </td>
             </tr>
             <tr>

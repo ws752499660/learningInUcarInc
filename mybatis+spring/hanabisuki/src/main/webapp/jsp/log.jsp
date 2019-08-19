@@ -7,8 +7,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
+    <html>
+    <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <link href="https://cdn.bootcss.com/mdui/0.4.3/css/mdui.css" rel="stylesheet">
@@ -19,7 +19,7 @@
     <h1 class="mdui-color-light-blue-900">花火BBS</h1>
     <h2>操作记录查询</h2>
 
-    <div class="mdui-table-fluid" style="width: 1000px;margin: 0 auto">
+    <div class="mdui-table-fluid" style="width: 1000px;margin: 0 auto;text-align: center;">
         <form action="/getLog" method="post">
             <table class="mdui-table">
                 <tr>

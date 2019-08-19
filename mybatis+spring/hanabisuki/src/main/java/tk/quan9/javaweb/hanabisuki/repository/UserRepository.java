@@ -23,4 +23,6 @@ public interface UserRepository {
 
     public void updateRole(int userId,String roleName);
 
+    public void updatePictureIdById(int userId,int pictureId);
+
 }

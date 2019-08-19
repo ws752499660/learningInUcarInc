@@ -1,20 +1,13 @@
 package tk.quan9.javaweb.hanabisuki.controller;
 
-import com.sun.deploy.net.HttpResponse;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import tk.quan9.javaweb.hanabisuki.entity.Comment;
-import tk.quan9.javaweb.hanabisuki.entity.Role;
-import tk.quan9.javaweb.hanabisuki.entity.User;
-import tk.quan9.javaweb.hanabisuki.entity.UserGroup;
-import tk.quan9.javaweb.hanabisuki.service.CommentService;
-import tk.quan9.javaweb.hanabisuki.service.RightsCheck;
-import tk.quan9.javaweb.hanabisuki.service.UserGroupService;
-import tk.quan9.javaweb.hanabisuki.service.UserService;
-import tk.quan9.javaweb.hanabisuki.service.impl.Security;
+import org.springframework.web.multipart.MultipartFile;
+import tk.quan9.javaweb.hanabisuki.entity.*;
+import tk.quan9.javaweb.hanabisuki.service.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +24,8 @@ public class UserController {
     private CommentService commentService;
     @Autowired
     private UserGroupService userGroupService;
+    @Autowired
+    private PictureService pictureService;
 
 
     private void redirect(String url, HttpServletResponse response){
@@ -46,6 +41,9 @@ public class UserController {
         List<User> userList=(List)session.getAttribute("userList");
         for (User user:userList) {
             user.setCommentCounts(userService.getCommentCount(user.getId()));
+            //默认pictureId就是0（不存在时）
+            String pictureName=pictureService.getNameById(user.getPictureId());
+            user.setPictureName("picture/"+pictureName);
         }
         session.setAttribute("userList",userList);
         session.setAttribute("userGroupService",userGroupService);
@@ -54,12 +52,26 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.GET,value = {"/userProfileProducer"})
     public String userProfileProducer(HttpSession session, HttpServletRequest request){
+        List<Picture> pictureList=pictureService.getAllPictures();
+        User user=(User)session.getAttribute("userForProfile");
+        user.setPictureName(pictureService.getNameById(user.getPictureId()));
+        session.setAttribute("userForProfile",user);
+        session.setAttribute("pictureList",pictureList);
         return "userprofile";
     }
 
     @RequestMapping(method = RequestMethod.POST,value = {"/userProfileEditor"})
-    public void userProfileEditor(HttpSession session,
+    public void userProfileEditor(MultipartFile picture,HttpSession session,
                                     HttpServletRequest request,HttpServletResponse response){
+        User user=(User)session.getAttribute("userForProfile");
+        if(user!=null) {
+            if (!picture.isEmpty()) {
+                pictureService.upload(picture, user);
+            }else {
+                int pictureId=Integer.parseInt(request.getParameter("newPicture"));
+                user.setPictureId(pictureId);
+            }
+        }
         userService.updateUser(request,session);
         redirect("/UserGetter",response);
     }
@@ -98,9 +110,10 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST,value = {"/changeRole"})
     public String changeRole(HttpSession session,
                              HttpServletRequest request, HttpServletResponse response){
+        User user=(User)session.getAttribute("rcUser");
         String roleName=request.getParameter("roleName");
         roleName= StringEscapeUtils.escapeHtml4(roleName);
-        User user=(User)session.getAttribute("rcUser");
+
         if(user!=null) {
             userService.updateRole(user.getId(),roleName);
         }

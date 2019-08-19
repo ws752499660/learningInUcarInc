@@ -32,11 +32,12 @@
         }
         %>
     </h3>
-    <div class="mdui-table-fluid" style="width: 1000px;margin: 0 auto">
+    <div class="mdui-table-fluid" style="width: 1200px;margin: 0 auto">
         <table class="mdui-table mdui-table-hoverable">
             <tr>
                 <th>用户ID</th>
                 <th>用户名</th>
+                <th>头像</th>
                 <th>发言条数</th>
                 <th>电子邮件</th>
                 <th>电话号码</th>
@@ -53,6 +54,9 @@
                 <tr>
                     <td><%=userList.get(i).getId()%></td>
                     <td><%=userList.get(i).getUserName()%></td>
+                    <td>
+                        <img src="<%=userList.get(i).getPictureName()%>" style="max-height: 60px;max-width: 60px"/>
+                    </td>
                     <td><%=userList.get(i).getCommentCounts()%></td>
                     <td><%=userList.get(i).getEmail()%></td>
                     <td><%=userList.get(i).getPhoneNum()%></td>
