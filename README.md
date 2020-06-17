@@ -1,8 +1,10 @@
 # hanabisuki花火溯琦
-
+**花火溯琦是一个实现了RBAC的防注入的多用户公告板。**  
+hanabi即为烟花的罗马音。  
+<br>
 本仓库包含花火溯琦本体和它的前身以及尝试们。  
 花火溯琦本体在[hanabisuki/mybatis+spring/hanabisuki/](https://github.com/ws752499660/hanabisuki/tree/shuo.wang03/mybatis%2Bspring/hanabisuki)中  
-  
+<br>
 **以下为不同文件夹中所包含项目的介绍：**
 
 ## mybatis+spring  
